@@ -64,12 +64,3 @@ def part2(data):
 
         nums.append(int(num_str))
     return sum(nums)
-
-def main():
-    data = parse('input.txt')
-    print(part1(data))
-    print()
-    print(part2(data))
-
-if __name__ == "__main__":
-    main()

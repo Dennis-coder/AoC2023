@@ -16,12 +16,3 @@ def part1(data):
 
 def part2(data):
     pass
-
-def main():
-    data = parse('test.txt')
-    print(part1(data))
-    print()
-    print(part2(data))
-
-if __name__ == "__main__":
-    main()
