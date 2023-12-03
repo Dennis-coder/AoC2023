@@ -58,18 +58,18 @@ def part2(data):
     for (line, x) in symbols:
         if raw_text[line][x] != "*": continue
 
-        c = 0
+        count = 0
         val = 1
-        d = (line, x)
+        symbol_pos = (line, x)
         for (n, start, last) in numbers:   
-            for e in surronding(start, last):
-                if e == d:
-                    c += 1
+            for pos in surronding(start, last):
+                if pos == symbol_pos:
+                    count += 1
                     val *= n
                     break
-            if c > 2:
+            if count > 2:
                 break
-        if c == 2:
+        if count == 2:
             sum += val
 
     return sum
