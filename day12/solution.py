@@ -39,87 +39,45 @@ def check_record(record, lengths):
             return False
     return True
 
-def permutations2(record, lengths):
-    count = 0
-    expected = sum(lengths)
-    dfs = [(record, 0, 0)]
+def permutations(record, lens):
     record_len = len(record)
-    lengths_len = len(lengths)
-    seen = set()
-    while dfs:
-        rec, length_i, rec_i = dfs.pop()
-        n = rec.count("#")
-
-
-        if n == expected and check_record(rec, lengths):
-            count += 1
-            continue
-
-        if (rec, length_i, rec_i) in seen:
-            continue
-
-        seen.add((rec, length_i, rec_i))
-
-        if length_i == lengths_len or n == expected or rec_i == len(rec):
-            continue
-
-        length = lengths[length_i]
-        start = rec_i
-        damaged_found = False
-        for i in range(rec_i, record_len+1):
-            if i == record_len:
-                break
-            char = record[i]
-            if char != "#" and i - start == length:
-                break
-            elif char == "#" and i - start == length and rec[start] == "#":
-                start = record_len
-                break
-            elif char == "#" and i - start == length:
-                start += 1
-            elif char == "#":
-                damaged_found = True
-            elif char == "." and damaged_found:
-                start = record_len
-                break
-            elif char == ".":
-                start = i + 1
-
-    
-        if i - start != length or start == record_len:
-            continue
-
-        dfs.append((
-            rec[:rec_i] + "."*(start-rec_i) + "#"*length + "." + rec[i+1:],
-            length_i+1,
-            i+1
-        ))
-
-        if not rec[start] == "#":
-            while start < record_len and rec[start] == "#":
-                start += 1
-            dfs.append((
-                rec[:rec_i] + rec[rec_i:start+1].replace("?", ".") + rec[start+1:],
-                length_i,
-                start+1
-            ))
+    lens_len = len(lens)
+    memo = {}
+    def dp(rec_i, lens_i, cur_len):
+        key = (rec_i, lens_i, cur_len)
+        if key in memo:
+            return memo[key]
+        if rec_i == record_len:
+            if lens_i == lens_len and cur_len == 0:
+                return 1
+            if lens_i == lens_len - 1 and cur_len == lens[-1]:
+                return 1
+            return 0
         
-    return count
+        count = 0
+        char = record[rec_i]
+        if char != "#" and cur_len == 0:
+            count += dp(rec_i+1, lens_i, 0)
+        if char != "#" and lens_i < lens_len and cur_len == lens[lens_i]:
+            count += dp(rec_i+1, lens_i+1, 0)
+        if char != ".":
+            count += dp(rec_i+1, lens_i, cur_len+1)
+        memo[key] = count
+        return count
+    
+    dp(0,0,0)
+    return memo[(0,0,0)]
 
 def part1(data):
     sum = 0
-    for (record, lengths) in data:
-        sum += permutations2(record, lengths)
+    for record, lengths in data:
+        sum += permutations(record, lengths)
     return sum
 
 def part2(data):
     sum = 0
-    for i, (record, lengths) in enumerate(data):
-        if record[0] == "#":
-            count = permutations2(record, lengths) ** 5
-        else: 
-            record = "?".join([record for _ in range(5)])
-            lengths = lengths * 5
-            count = permutations2(record, lengths)
-        sum += count
+    for record, lengths in data:
+        record = "?".join([record for _ in range(5)])
+        lengths = lengths * 5
+        sum += permutations(record, lengths)
     return sum
