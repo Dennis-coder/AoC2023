@@ -1,9 +1,4 @@
-from functools import cache, cmp_to_key
-from queue import Queue, PriorityQueue
-from heapq import heappush, heappop
-import re
-from copy import deepcopy
-from math import *
+from math import sqrt
 
 
 def parse(file_name):

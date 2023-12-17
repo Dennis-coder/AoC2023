@@ -1,10 +1,5 @@
-from functools import cache, cmp_to_key
-from queue import Queue, PriorityQueue
-from heapq import heappush, heappop
-import re
+from functools import cache
 from copy import deepcopy
-from math import *
-
 
 def parse(file_name):
     with open(file_name, "r") as file:
