@@ -82,23 +82,11 @@ def cycles(round, square, rows, cols, n):
         round = cycle(round, square, rows, cols)
     return round
 
-def cycles2(round, square, rows, cols, n):
-    for i in range(n):
-        round = cycle(round, square, rows, cols)
-    return round
-
 def calc_load(round, rows):
     total_load = 0
     for (row, _) in round:
         total_load += rows-row
     return total_load
-
-def pprint(round, rows, cols):
-    for row in range(rows):
-        row_str = ""
-        for col in range(cols):
-            row_str += "O" if (row, col) in round else "."
-        print(row_str)
 
 def part1(data):
     round, square, rows, cols = data
