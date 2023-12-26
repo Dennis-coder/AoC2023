@@ -1,4 +1,4 @@
-from queue import Queue, PriorityQueue
+from queue import Queue
 
 
 def parse(file_name):
